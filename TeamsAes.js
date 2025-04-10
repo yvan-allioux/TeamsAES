@@ -1,8 +1,19 @@
+// monsuperscript.js
 (function() {
     'use strict';
 
-    // Fonction pour initialiser les variables locales
-    window.initCocAES = function(cleMessage, secretKey) {
+    function waitForVariables() {
+        return new Promise((resolve, reject) => {
+            const interval = setInterval(() => {
+                if (typeof cleMessage !== 'undefined' && typeof secretKey !== 'undefined') {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 100); // Vérifie toutes les 100ms
+        });
+    }
+
+    waitForVariables().then(() => {
         // Créer un bouton
         const bouton = document.createElement('button');
         bouton.textContent = 'CA';
@@ -43,5 +54,7 @@
 
         setInterval(decryptMessages, 3000);
         document.body.appendChild(bouton);
-    };
+    }).catch(() => {
+        console.error("Les variables 'cleMessage' et 'secretKey' ne sont pas définies.");
+    });
 })();
